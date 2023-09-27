@@ -6,7 +6,7 @@ export default function Layout() {
   return (
     <>
       <Header />
-      <main className="container">
+      <main className="container py-8">
         <Outlet />
       </main>
     </>

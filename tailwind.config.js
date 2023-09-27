@@ -20,62 +20,40 @@ module.exports = {
     fontFamily: {
       sans: ['Plus Jakarta Sans', ...defaultTheme.fontFamily.sans],
     },
-    extend: {
-      colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
-      },
-      keyframes: {
-        'accordion-down': {
-          from: { height: 0 },
-          to: { height: 'var(--radix-accordion-content-height)' },
-        },
-        'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: 0 },
-        },
-      },
-      animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-      },
-    },
   },
-  plugins: [require('tailwindcss-animate')],
+  daisyui: {
+    themes: [
+      {
+        light: {
+          primary: '#000000',
+          secondary: '#343232',
+          accent: '#50e3c2',
+          neutral: '#272626',
+          'base-100': '#ffffff',
+          info: '#0070f3',
+          success: '#0070f3',
+          warning: '#f5a623',
+          error: '#e00',
+        },
+      },
+      {
+        dark: {
+          primary: '#ffffff',
+          secondary: '#343232',
+          accent: '#50e3c2',
+          neutral: '#272626',
+          'base-100': '#000000',
+          info: '#0070f3',
+          success: '#0070f3',
+          warning: '#f5a623',
+          error: '#e00',
+        },
+      },
+    ],
+    darkTheme: 'dark', // name of one of the included themes for dark mode
+    base: true, // applies background color and foreground color for root element by default
+    styled: true, // include daisyUI colors and design decisions for all components
+    utils: true, // adds responsive and modifier utility classes
+  },
+  plugins: [require('@tailwindcss/typography'), require('daisyui'), require('tailwindcss-animate')],
 };
