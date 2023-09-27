@@ -2,7 +2,7 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ['class'],
+  darkMode: ['media'],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -25,6 +25,7 @@ module.exports = {
     themes: [
       {
         light: {
+          ...require('daisyui/src/theming/themes')['[data-theme=light]'],
           primary: '#000000',
           secondary: '#343232',
           accent: '#50e3c2',
@@ -38,6 +39,7 @@ module.exports = {
       },
       {
         dark: {
+          ...require('daisyui/src/theming/themes')['[data-theme=dark]'],
           primary: '#ffffff',
           secondary: '#343232',
           accent: '#50e3c2',
