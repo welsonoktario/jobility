@@ -1,8 +1,8 @@
 import { User } from '@/types';
-import { createContext, useState, type ReactNode } from 'react';
+import { createContext, useState } from 'react';
 
 type AuthProviderProps = {
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 type AuthProviderState = {

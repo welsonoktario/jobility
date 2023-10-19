@@ -1,8 +1,8 @@
 import { FontSize, Theme } from '@/types/theme';
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 type ThemeProviderProps = {
-  children: ReactNode;
+  children: React.ReactNode;
   defaultTheme?: Theme;
   defaultFontSize?: FontSize;
   themeStorageKey?: string;
