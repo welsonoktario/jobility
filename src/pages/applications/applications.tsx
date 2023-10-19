@@ -1,3 +1,9 @@
+import { PageWrapper } from '@/components/page-wrapper';
+
 export default function ApplicationsPage() {
-  return <p>Applications page</p>;
+  return (
+    <PageWrapper>
+      <p>Applications page</p>
+    </PageWrapper>
+  );
 }

@@ -2,7 +2,7 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ['media'],
+  darkMode: ['class', '[data-theme="dark"]'],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -30,11 +30,13 @@ module.exports = {
           secondary: '#343232',
           accent: '#50e3c2',
           neutral: '#272626',
-          'base-100': '#ffffff',
           info: '#0070f3',
           success: '#0070f3',
           warning: '#f5a623',
           error: '#e00',
+          'base-100': '#ffffff',
+          'base-200': '#e5e5e5',
+          'base-300': '#d4d4d4',
         },
       },
       {
@@ -44,11 +46,13 @@ module.exports = {
           secondary: '#343232',
           accent: '#50e3c2',
           neutral: '#272626',
-          'base-100': '#000000',
-          info: '#0070f3',
+          info: '#3291ff',
           success: '#0070f3',
           warning: '#f5a623',
           error: '#e00',
+          'base-100': '#000000',
+          'base-200': '#171717',
+          'base-300': '#262626',
         },
       },
     ],

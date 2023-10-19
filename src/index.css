@@ -10,9 +10,13 @@ html.fs-xl {
   font-size: 24px;
 }
 
-.btn {
-  @apply min-h-[36px] px-4 leading-5 text-base-100;
+.btn:not(.btn-circle) {
+  @apply min-h-[36px] px-4 leading-5 text-base-100 dark:text-white;
   text-transform: none;
+}
+
+.btn-circle {
+  @apply p-3;
 }
 
 * {

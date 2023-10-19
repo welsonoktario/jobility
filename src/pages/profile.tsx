@@ -1,3 +1,9 @@
+import { PageWrapper } from '@/components/page-wrapper';
+
 export default function ProfilePage() {
-  return <p>Profile page</p>;
+  return (
+    <PageWrapper>
+      <p>Profile page</p>
+    </PageWrapper>
+  );
 }

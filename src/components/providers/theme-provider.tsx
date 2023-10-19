@@ -1,10 +1,8 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-
-type Theme = 'dark' | 'light' | 'system';
-type FontSize = 'base' | 'lg' | 'xl';
+import { FontSize, Theme } from '@/types/theme';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 type ThemeProviderProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   defaultTheme?: Theme;
   defaultFontSize?: FontSize;
   themeStorageKey?: string;
@@ -21,11 +19,11 @@ type ThemeProviderState = {
 const initialState: ThemeProviderState = {
   theme: 'system',
   fontSize: 'base',
-  setTheme: () => null,
-  setFontSize: () => null,
+  setTheme: () => undefined,
+  setFontSize: () => undefined,
 };
 
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+export const ThemeContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
@@ -43,24 +41,22 @@ export function ThemeProvider({
   );
 
   useEffect(() => {
-    const root = window.document.documentElement;
-
-    root.classList.remove('light', 'dark');
+    const root = document.querySelector('body')!;
 
     if (theme === 'system') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
         ? 'dark'
         : 'light';
 
-      root.classList.add(systemTheme);
+      root.dataset.theme = systemTheme;
       return;
     }
 
-    root.classList.add(theme);
+    root.dataset.theme = theme;
   }, [theme, fontSize]);
 
   useEffect(() => {
-    const root = window.document.documentElement;
+    const root = document.querySelector('body')!;
 
     root.classList.remove('fs-lg', 'fs-xl');
 
@@ -85,16 +81,8 @@ export function ThemeProvider({
   };
 
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
+    <ThemeContext.Provider {...props} value={value}>
       {children}
-    </ThemeProviderContext.Provider>
+    </ThemeContext.Provider>
   );
 }
-
-export const useTheme = () => {
-  const context = useContext(ThemeProviderContext);
-
-  if (context === undefined) throw new Error('useTheme must be used within a ThemeProvider');
-
-  return context;
-};

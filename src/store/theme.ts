@@ -1,8 +1,6 @@
+import { FontSize, Theme } from '@/types';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-type Theme = 'light' | 'dark' | 'system';
-type FontSize = 'base' | 'lg' | 'xl';
 
 export type ThemeState = {
   theme: Theme;

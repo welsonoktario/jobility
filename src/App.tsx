@@ -1,5 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
+import ApplicationDetailPage from '@/pages/applications/application-detail';
+import ApplicationsPage from '@/pages/applications/applications';
 import LoginPage from '@/pages/auth/login';
 import RegisterPage from '@/pages/auth/register';
 import HomePage from '@/pages/home';
@@ -9,9 +11,6 @@ import JobsPage from '@/pages/jobs/jobs';
 import ProfilePage from '@/pages/profile';
 
 import Layout from '@/components/layout';
-
-import ApplicationDetailPage from './pages/applications/application-detail';
-import ApplicationsPage from './pages/applications/applications';
 
 export default function App() {
   return (
