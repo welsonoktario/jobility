@@ -1,16 +1,16 @@
+import loadable from '@loadable/component';
 import { Route, Routes } from 'react-router-dom';
 
-import ApplicationDetailPage from '@/pages/applications/application-detail';
-import ApplicationsPage from '@/pages/applications/applications';
-import LoginPage from '@/pages/auth/login';
-import RegisterPage from '@/pages/auth/register';
-import HomePage from '@/pages/home';
-import ApplyPage from '@/pages/jobs/apply';
-import JobPage from '@/pages/jobs/job-detail';
-import JobsPage from '@/pages/jobs/jobs';
-import ProfilePage from '@/pages/profile';
-
-import Layout from '@/components/layout';
+const Layout = loadable(() => import('@/components/layout'));
+const HomePage = loadable(() => import('@/pages/home'));
+const LoginPage = loadable(() => import('@/pages/auth/login'));
+const RegisterPage = loadable(() => import('@/pages/auth/register'));
+const JobsPage = loadable(() => import('@/pages/jobs/jobs'));
+const JobPage = loadable(() => import('@/pages/jobs/job-detail'));
+const ProfilePage = loadable(() => import('@/pages/profile'));
+const ApplyPage = loadable(() => import('@/pages/jobs/apply'));
+const ApplicationsPage = loadable(() => import('@/pages/applications/applications'));
+const ApplicationDetailPage = loadable(() => import('@/pages/applications/application-detail'));
 
 export default function App() {
   return (
