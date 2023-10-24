@@ -3,7 +3,7 @@ module.exports = {
   semi: true,
   endOfLine: 'lf',
   printWidth: 100,
-  plugins: ['@ianvs/prettier-plugin-sort-imports', 'prettier-plugin-tailwindcss'],
+  plugins: ['@ianvs/prettier-plugin-sort-imports'],
   tailwindFunctions: ['clsx', 'cn', 'tw'],
   importOrder: [
     '^react',

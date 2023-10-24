@@ -1,16 +1,26 @@
-import { MenuIcon, MonitorIcon, MoonIcon, SunIcon, TypeIcon } from 'lucide-react';
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  useDisclosure,
+} from '@chakra-ui/react';
+import clsx from 'clsx';
+import { MenuIcon, MonitorIcon, MoonIcon, SunIcon, TypeIcon, UserIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { cn } from '@/lib/utils';
-
-import { Button } from '@/components/button';
-import { HeaderItem, HeaderMenu, HeaderMenuItem } from '@/components/header-menu';
-import { useAuth, useScroll, useSidebar, useTheme } from '@/components/hooks';
+import { useAuth, useScroll, useTheme } from '@/components/hooks';
 
 export default function Header() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { theme, setTheme, setFontSize } = useTheme();
   const { user } = useAuth();
-  const { toggleIsOpen } = useSidebar();
   const { y } = useScroll();
 
   const themeMenuIcon = () => {
@@ -26,54 +36,60 @@ export default function Header() {
   };
 
   return (
-    <header
-      className={cn(
-        'text-foreground sticky top-0 w-full transition-all',
-        y > 80
-          ? 'bg-base-100 bg-opacity-75 shadow-md backdrop-blur-md dark:bg-base-200 dark:bg-opacity-75'
-          : 'bg-base-200 dark:bg-base-100',
-      )}
+    <Box
+      width={'full'}
+      position={'sticky'}
+      top={0}
+      backgroundColor={y > 80 ? 'Background' : 'transparent'}
+      boxShadow={y > 80 ? 'lg' : 'none'}
+      backdropBlur={y > 80 ? 'lg' : 'none'}
     >
-      <nav className="container mx-auto flex items-center justify-between py-4">
-        <div className="flex gap-x-2">
-          <HeaderItem
-            icon={<MenuIcon />}
-            onClick={() => {
-              toggleIsOpen();
-            }}
-          />
-          <Link
-            className="inline-flex items-center gap-x-4 text-2xl font-bold leading-none transition-all"
-            to="/"
-          >
-            Jobility
-          </Link>
-        </div>
-
-        <div className="inline-flex items-center gap-x-4">
-          <HeaderMenu icon={themeMenuIcon()} srText="Toggle theme">
-            <HeaderMenuItem onClick={() => setTheme('light')}>Light</HeaderMenuItem>
-            <HeaderMenuItem onClick={() => setTheme('dark')}>Dark</HeaderMenuItem>
-            <HeaderMenuItem onClick={() => setTheme('system')}>System</HeaderMenuItem>
-          </HeaderMenu>
-
-          <HeaderMenu icon={<TypeIcon />} srText="Toggle font size">
-            <HeaderMenuItem onClick={() => setFontSize('base')}>Default</HeaderMenuItem>
-            <HeaderMenuItem onClick={() => setFontSize('lg')}>Large</HeaderMenuItem>
-            <HeaderMenuItem onClick={() => setFontSize('xl')}>Extra Large</HeaderMenuItem>
-          </HeaderMenu>
-
-          {user ? (
-            <Button></Button>
-          ) : (
-            <Link to={'/auth/login'}>
-              <Button className="h-fit" color="info">
-                Login
-              </Button>
+      <Container py={4} maxW={'6xl'}>
+        <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
+          <Flex direction={'row'} columnGap={2} alignItems={'center'}>
+            <IconButton aria-label="Open side menu" onClick={onOpen} variant={'ghost'} isRound>
+              <MenuIcon />
+            </IconButton>
+            <Link to="/">
+              <Heading size={'md'}>Jobility</Heading>
             </Link>
-          )}
-        </div>
-      </nav>
-    </header>
+          </Flex>
+
+          <Flex direction={'row'} columnGap={4} alignItems={'center'}>
+            <Menu>
+              <MenuButton as={Button} variant={'ghost'}>
+                {themeMenuIcon()}
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={() => setTheme('light')}></MenuItem>
+                <MenuItem onClick={() => setTheme('dark')}>Dark</MenuItem>
+                <MenuItem onClick={() => setTheme('system')}>System</MenuItem>
+              </MenuList>
+            </Menu>
+
+            <Menu>
+              <MenuButton as={Button} variant={'ghost'}>
+                <TypeIcon />
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={() => setFontSize('base')}>Default</MenuItem>
+                <MenuItem onClick={() => setFontSize('lg')}>Large</MenuItem>
+                <MenuItem onClick={() => setFontSize('xl')}>Extra Large</MenuItem>
+              </MenuList>
+            </Menu>
+
+            {user ? (
+              <Button>
+                <UserIcon />
+              </Button>
+            ) : (
+              <Link to={'/auth/login'}>
+                <Button variant={'solid'}>Login</Button>
+              </Link>
+            )}
+          </Flex>
+        </Flex>
+      </Container>
+    </Box>
   );
 }
