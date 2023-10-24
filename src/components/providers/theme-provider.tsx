@@ -1,5 +1,8 @@
 import { FontSize, Theme } from '@/types/theme';
+import { ChakraProvider } from '@chakra-ui/react';
 import { createContext, useEffect, useState } from 'react';
+
+import baseTheme from '@/lib/theme';
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -40,7 +43,7 @@ export function ThemeProvider({
     () => (localStorage.getItem(fontSizeStorageKey) as FontSize) || defaultFontSize,
   );
 
-  useEffect(() => {
+  /* useEffect(() => {
     const root = document.querySelector('body')!;
 
     if (theme === 'system') {
@@ -65,7 +68,7 @@ export function ThemeProvider({
     }
 
     root.classList.add(`fs-${fontSize}`);
-  }, [fontSize]);
+  }, [fontSize]); */
 
   const value = {
     theme,
@@ -81,8 +84,10 @@ export function ThemeProvider({
   };
 
   return (
-    <ThemeContext.Provider {...props} value={value}>
-      {children}
-    </ThemeContext.Provider>
+    <ChakraProvider theme={baseTheme}>
+      <ThemeContext.Provider {...props} value={value}>
+        {children}
+      </ThemeContext.Provider>
+    </ChakraProvider>
   );
 }

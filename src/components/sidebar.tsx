@@ -1,32 +1,37 @@
-import { useSidebar } from '@/components/hooks';
+import {
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  Input,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 export function Sidebar() {
-  const { isOpen, toggleIsOpen } = useSidebar();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <>
-      <input
-        className="drawer-toggle"
-        type="checkbox"
-        checked={isOpen}
-        onChange={() => toggleIsOpen()}
-      />
-      <div className="drawer-side">
-        <label
-          className="drawer-overlay"
-          onClick={() => toggleIsOpen()}
-          aria-label="Close sidebar"
-        />
-        <ul className="dar:bg-base-200 menu min-h-full w-80 bg-base-100 p-4 text-base-content dark:bg-base-200">
-          {/* Sidebar content here */}
-          <li>
-            <a>Sidebar Item 1</a>
-          </li>
-          <li>
-            <a>Sidebar Item 2</a>
-          </li>
-        </ul>
-      </div>
-    </>
+    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerCloseButton />
+        <DrawerHeader>Create your account</DrawerHeader>
+
+        <DrawerBody>
+          <Input placeholder="Type here..." />
+        </DrawerBody>
+
+        <DrawerFooter>
+          <Button variant="outline" mr={3} onClick={onClose}>
+            Cancel
+          </Button>
+          <Button colorScheme="blue">Save</Button>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
 }
