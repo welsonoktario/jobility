@@ -34,7 +34,7 @@ export default function RegisterPage() {
 
   return (
     <PageWrapper className="flex h-full flex-col items-center justify-center">
-      <Card className="w-1/3">
+      <Card className="w-full md:w-1/3">
         <div className="card-body">
           <CardTitle className="mx-auto">Create an Account</CardTitle>
 
