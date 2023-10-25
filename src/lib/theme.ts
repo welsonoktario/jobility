@@ -1,10 +1,30 @@
-import { extendTheme, type ThemeConfig } from '@chakra-ui/react';
+import {
+  theme as chakraTheme,
+  extendTheme,
+  StyleFunctionProps,
+  type ThemeConfig,
+} from '@chakra-ui/react';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
   useSystemColorMode: false,
 };
 
-const theme = extendTheme({ config });
+const fonts = {
+  ...chakraTheme.fonts,
+  body: '"Plus Jakarta Sans", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+  heading:
+    '"Plus Jakarta Sans", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+};
+
+const styles = {
+  global: (props: StyleFunctionProps) => ({
+    body: {
+      bg: 'gray.200',
+    },
+  }),
+};
+
+const theme = extendTheme({ config, fonts, styles });
 
 export default theme;
