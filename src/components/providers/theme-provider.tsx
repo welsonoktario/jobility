@@ -56,10 +56,10 @@ export function ThemeProvider({
     }
 
     root.dataset.theme = theme;
-  }, [theme, fontSize]);
+  }, [theme, fontSize]); */
 
   useEffect(() => {
-    const root = document.querySelector('body')!;
+    const root = document.querySelector('html')!;
 
     root.classList.remove('fs-lg', 'fs-xl');
 
@@ -68,7 +68,7 @@ export function ThemeProvider({
     }
 
     root.classList.add(`fs-${fontSize}`);
-  }, [fontSize]); */
+  }, [fontSize]);
 
   const value = {
     theme,
