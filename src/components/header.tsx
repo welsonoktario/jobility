@@ -16,9 +16,10 @@ import { MenuIcon, MonitorIcon, MoonIcon, SunIcon, TypeIcon, UserIcon } from 'lu
 import { Link } from 'react-router-dom';
 
 import { useAuth, useScroll, useTheme } from '@/components/hooks';
+import { useSidebar } from './hooks/useSidebar';
 
 export default function Header() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useSidebar();
   const { theme, setTheme, setFontSize } = useTheme();
   const { user } = useAuth();
   const { y } = useScroll();

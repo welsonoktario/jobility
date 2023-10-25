@@ -7,29 +7,33 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Heading,
   Input,
-  useDisclosure,
+  Text,
 } from '@chakra-ui/react';
 
+import { useSidebar } from '@/components/hooks';
+
 export function Sidebar() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useSidebar();
 
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+    <Drawer isOpen={isOpen ?? false} placement="left" onClose={onClose!}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Create your account</DrawerHeader>
+        <DrawerHeader>
+          <Heading size={'lg'} display={{ md: 'none' }}>
+            Jobility
+          </Heading>
+        </DrawerHeader>
 
         <DrawerBody>
-          <Input placeholder="Type here..." />
+          <Text>Drawer Content</Text>
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={onClose}>
-            Cancel
-          </Button>
-          <Button colorScheme="blue">Save</Button>
+          <Text>Footer</Text>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
