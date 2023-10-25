@@ -1,14 +1,28 @@
-import { Button } from '@/components';
 import { User } from '@/types';
-import { Loader2, LogInIcon } from 'lucide-react';
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Icon,
+  Input,
+  Link,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
+import { LogInIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
 
 import { $post } from '@/lib/helpers';
 
-import { Card, CardTitle } from '@/components/card';
 import { useAuth } from '@/components/hooks';
-import { FormControl, FormLabel, TextField } from '@/components/inputs';
 import { PageWrapper } from '@/components/page-wrapper';
 
 export default function LoginPage() {
@@ -16,7 +30,7 @@ export default function LoginPage() {
   const { user, setUser } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [status, setStatus] = useState();
+  const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -28,27 +42,42 @@ export default function LoginPage() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    e.currentTarget.checkValidity();
 
-    const res = await $post<User>('/auth/login', {
-      email,
-      password,
-    });
+    setIsLoading(true);
+    try {
+      const res = await $post<User>('/auth/login', {
+        email,
+        password,
+      });
 
-    const { status, data, message } = res;
+      const { status, data, message } = res;
 
-    setUser(data!);
+      if (status === 'fail') {
+        throw new Error(message);
+      }
+
+      setUser(data);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
-    <PageWrapper className="flex h-full flex-col items-center justify-center">
-      <Card className="w-full md:w-1/3">
-        <div className="card-body">
-          <CardTitle className="mx-auto">Login to Jobility</CardTitle>
-
+    <PageWrapper display="flex" alignItems="center" justifyContent="center">
+      <Card rounded="3xl" w={{ base: 'full', md: 'lg' }}>
+        <CardHeader>
+          <Heading size="md" textAlign="center">
+            Login to Jobility
+          </Heading>
+        </CardHeader>
+        <CardBody>
           <form onSubmit={handleSubmit}>
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <TextField
+              <FormLabel>Email</FormLabel>
+              <Input
                 type="email"
                 name="email"
                 autoCapitalize="false"
@@ -56,13 +85,13 @@ export default function LoginPage() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
+                isRequired
               />
             </FormControl>
 
-            <FormControl className="mt-2">
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <TextField
+            <FormControl mt="4">
+              <FormLabel>Password</FormLabel>
+              <Input
                 type="password"
                 name="password"
                 autoCapitalize="false"
@@ -70,26 +99,43 @@ export default function LoginPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
+                isRequired
               />
             </FormControl>
 
-            <Button className="mt-8 w-full" color="info" disabled={isLoading}>
+            <Button
+              mt="8"
+              w="full"
+              variant="solid"
+              alignItems="center"
+              columnGap="2"
+              colorScheme="blue"
+              type="submit"
+              isDisabled={isLoading}
+            >
               {isLoading ? (
-                <Loader2 className="mr-2 animate-spin" />
+                <Spinner />
               ) : (
-                <LogInIcon className="mr-2" />
+                <Icon>
+                  <LogInIcon />
+                </Icon>
               )}
               Login
             </Button>
           </form>
 
-          <div className="divider my-4">or</div>
+          <Flex w="full" alignItems="center" columnGap="4" my="8">
+            <Divider />
+            <Text>or</Text>
+            <Divider />
+          </Flex>
 
-          <Link className="link mx-auto w-fit text-info" to="/auth/register">
-            Create an account
-          </Link>
-        </div>
+          <Box textAlign="center">
+            <Link as={ReactRouterLink} color="blue" to="/auth/register">
+              Create an account
+            </Link>
+          </Box>
+        </CardBody>
       </Card>
     </PageWrapper>
   );

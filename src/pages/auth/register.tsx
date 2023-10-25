@@ -1,15 +1,33 @@
-import { Button } from '@/components';
 import { User } from '@/types';
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Link,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
 
-import { Card, CardTitle } from '@/components/card';
+import { $post } from '@/lib/helpers';
+
 import { useAuth } from '@/components/hooks';
 import { PageWrapper } from '@/components/page-wrapper';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
   const { user, setUser } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setError] = useState('');
 
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
@@ -23,28 +41,42 @@ export default function RegisterPage() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    var data = {
-      id: 1,
-      email,
-      fullname,
-    } satisfies User;
 
-    setUser(data);
+    setIsLoading(true);
+    try {
+      const res = await $post<User>('/auth/register', {
+        fullname,
+        email,
+        password,
+      });
+
+      const { data, status, message } = res;
+
+      if (status === 'fail') {
+        throw new Error(message);
+      }
+
+      setUser(data);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
-    <PageWrapper className="flex h-full flex-col items-center justify-center">
-      <Card className="w-full md:w-1/3">
-        <div className="card-body">
-          <CardTitle className="mx-auto">Create an Account</CardTitle>
-
+    <PageWrapper display="flex" alignItems="center" justifyContent="center">
+      <Card rounded="3xl" w={{ base: 'full', md: 'lg' }}>
+        <CardHeader>
+          <Heading size="md" textAlign="center">
+            Create an Account
+          </Heading>
+        </CardHeader>
+        <CardBody>
           <form onSubmit={handleSubmit}>
-            <div className="form-control w-full">
-              <label htmlFor="fullname" className="label">
-                Full Name
-              </label>
-              <input
-                className="input bg-base-200 dark:bg-base-300"
+            <FormControl>
+              <FormLabel>Full Name</FormLabel>
+              <Input
                 type="text"
                 name="fullname"
                 value={fullname}
@@ -52,15 +84,13 @@ export default function RegisterPage() {
                 autoCapitalize="false"
                 autoComplete="name"
                 placeholder="Email"
+                isRequired
               />
-            </div>
+            </FormControl>
 
-            <div className="form-control mt-2 w-full">
-              <label htmlFor="email" className="label">
-                Email
-              </label>
-              <input
-                className="input bg-base-200 dark:bg-base-300"
+            <FormControl mt="4">
+              <FormLabel>Email</FormLabel>
+              <Input
                 type="email"
                 name="email"
                 value={email}
@@ -68,34 +98,51 @@ export default function RegisterPage() {
                 autoCapitalize="false"
                 autoComplete="email"
                 placeholder="Email"
+                isRequired
               />
-            </div>
+            </FormControl>
 
-            <div className="form-control mt-2 w-full">
-              <label htmlFor="password" className="label">
-                Password
-              </label>
-              <input
-                className="input w-full bg-base-200 dark:bg-base-300"
+            <FormControl mt="4">
+              <FormLabel>Password</FormLabel>
+              <Input
                 type="password"
                 name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 autoCapitalize="false"
                 autoComplete="current-password"
                 placeholder="Password"
+                isRequired
               />
-            </div>
+            </FormControl>
 
-            <Button className="mt-8 w-full" color="info">
+            <Button
+              type="submit"
+              mt="8"
+              w="full"
+              variant="solid"
+              alignItems="center"
+              columnGap="2"
+              colorScheme="blue"
+              isDisabled={isLoading}
+            >
+              {isLoading ? <Spinner /> : null}
               Register
             </Button>
           </form>
 
-          <div className="divider my-4">or</div>
+          <Flex w="full" alignItems="center" columnGap="4" my="8">
+            <Divider />
+            <Text>or</Text>
+            <Divider />
+          </Flex>
 
-          <Link className="link mx-auto w-fit text-info" to="/auth/login">
-            Login to Jobility
-          </Link>
-        </div>
+          <Box textAlign="center">
+            <Link as={ReactRouterLink} color="blue" to="/auth/login">
+              Login to Jobility
+            </Link>
+          </Box>
+        </CardBody>
       </Card>
     </PageWrapper>
   );
