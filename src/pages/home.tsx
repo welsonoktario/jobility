@@ -1,9 +1,11 @@
-import { Button, Container, Text } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+
+import { PageWrapper } from '@/components/page-wrapper';
 
 export default function Home() {
   return (
-    <Container maxW={'7xl'}>
+    <PageWrapper>
       <Link to="/jobs">
         <Button variant={'solid'}>Browse Jobs</Button>
       </Link>
@@ -17,6 +19,6 @@ export default function Home() {
         Facere et exercitationem culpa nihil commodi inventore accusamus! Labore illum distinctio
         excepturi pariatur delectus atque a optio, quo exercitationem, voluptatem laudantium quos.
       </Text>
-    </Container>
+    </PageWrapper>
   );
 }
