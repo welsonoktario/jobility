@@ -1,35 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-html.fs-lg {
-  font-size: 20px;
-}
-
-html.fs-xl {
-  font-size: 24px;
-}
-
-.btn:not(.btn-circle) {
-  @apply min-h-[36px] px-4 leading-5 text-base-100 dark:text-white;
-  text-transform: none;
-}
-
-.btn-circle {
-  @apply p-3;
-}
-
 * {
-  @apply text-primary;
+  font-size: 12pt;
 }
 
-::selection {
-  @apply bg-accent;
+body.fs-lg * {
+  font-size: 16pt;
 }
 
-@media (prefers-color-scheme: dark) {
-  .btn-success,
-  .btn-info {
-    @apply text-white;
-  }
+body.fs-xl * {
+  font-size: 20pt;
 }

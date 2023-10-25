@@ -7,12 +7,12 @@ type AuthProviderProps = {
 
 type AuthProviderState = {
   user?: User;
-  setUser: (user: User) => void;
+  setUser: (user?: User) => void;
 };
 
 const initialState: AuthProviderState = {
   user: undefined,
-  setUser: (user) => undefined,
+  setUser: (user?: User) => undefined,
 };
 
 export const AuthContext = createContext<AuthProviderState>(initialState);
