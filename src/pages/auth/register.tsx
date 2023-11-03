@@ -44,7 +44,7 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      const res = await $post<User>('/auth/register', {
+      const res = await $post<User & { token: string }>('/auth/register', {
         fullname,
         email,
         password,
@@ -83,7 +83,7 @@ export default function RegisterPage() {
                 onChange={(e) => setFullname(e.target.value)}
                 autoCapitalize="false"
                 autoComplete="name"
-                placeholder="Email"
+                placeholder="Full name  "
                 isRequired
               />
             </FormControl>

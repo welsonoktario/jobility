@@ -46,7 +46,7 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      const res = await $post<User>('/auth/login', {
+      const res = await $post<User | null>('/auth/login', {
         email,
         password,
       });

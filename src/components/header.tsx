@@ -4,24 +4,24 @@ import {
   Container,
   Flex,
   Heading,
-  Icon,
   IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  useDisclosure,
+  Spinner,
 } from '@chakra-ui/react';
 import { MenuIcon, MonitorIcon, MoonIcon, SunIcon, TypeIcon, UserIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { useAuth, useScroll, useTheme } from '@/components/hooks';
+
 import { useSidebar } from './hooks/useSidebar';
 
 export default function Header() {
   const { isOpen, onOpen, onClose } = useSidebar();
   const { theme, setTheme, setFontSize } = useTheme();
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const { y } = useScroll();
 
   const themeMenuIcon = () => {
@@ -78,15 +78,25 @@ export default function Header() {
               </MenuList>
             </Menu>
 
-            {user ? (
+            {isLoading ? (
+              <IconButton
+                aria-label="Loading"
+                icon={<Spinner />}
+                variant="ghost"
+                colorScheme="blue"
+                isRound
+              />
+            ) : null}
+            {!isLoading && user ? (
               <IconButton aria-label="Profile" icon={<UserIcon />} colorScheme="blue" isRound />
-            ) : (
+            ) : null}
+            {!isLoading && !user ? (
               <Link to={'/auth/login'}>
                 <Button variant={'solid'} colorScheme="blue">
                   Login
                 </Button>
               </Link>
-            )}
+            ) : null}
           </Flex>
         </Flex>
       </Container>
