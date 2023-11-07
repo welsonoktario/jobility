@@ -21,7 +21,7 @@ import { useSidebar } from './hooks/useSidebar';
 export default function Header() {
   const { isOpen, onOpen, onClose } = useSidebar();
   const { theme, setTheme, setFontSize } = useTheme();
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, logout } = useAuth();
   const { y } = useScroll();
 
   const themeMenuIcon = () => {
@@ -34,6 +34,15 @@ export default function Header() {
     }
 
     return <MonitorIcon />;
+  };
+
+  const handleLogout = async (onClose: () => void) => {
+    try {
+      await logout();
+      onClose();
+    } catch (e: any) {
+      console.error(e.message);
+    }
   };
 
   return (
@@ -88,7 +97,24 @@ export default function Header() {
               />
             ) : null}
             {!isLoading && user ? (
-              <IconButton aria-label="Profile" icon={<UserIcon />} colorScheme="blue" isRound />
+              <Menu>
+                {({ onClose }) => (
+                  <>
+                    <MenuButton
+                      as={IconButton}
+                      aria-label="Profile"
+                      icon={<UserIcon />}
+                      colorScheme="blue"
+                      isRound
+                    />
+
+                    <MenuList>
+                      <MenuItem>Profile</MenuItem>
+                      <MenuItem onClick={async () => await handleLogout(onClose)}>Logout</MenuItem>
+                    </MenuList>
+                  </>
+                )}
+              </Menu>
             ) : null}
             {!isLoading && !user ? (
               <Link to={'/auth/login'}>

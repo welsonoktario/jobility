@@ -23,7 +23,7 @@ export async function $get<T = unknown>(
 
 export async function $post<T = unknown>(
   url: string,
-  body: Record<string, any>,
+  body?: Record<string, any>,
   headers?: Record<string, string>,
 ): Promise<APIResponse<T>> {
   const httpOptions: RequestInit = {
