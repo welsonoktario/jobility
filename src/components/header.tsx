@@ -16,6 +16,7 @@ import { MenuIcon, MonitorIcon, MoonIcon, SunIcon, TypeIcon, UserIcon } from 'lu
 import { Link } from 'react-router-dom';
 
 import { useAuth, useScroll, useTheme } from '@/components/hooks';
+
 import { useSidebar } from './hooks/useSidebar';
 
 export default function Header() {
@@ -55,7 +56,7 @@ export default function Header() {
               <MenuIcon />
             </IconButton>
             <Link to="/">
-              <Heading size={'lg'}>Jobility</Heading>
+              <Heading fontSize="1.5rem" pb={1}>Jobility</Heading>
             </Link>
           </Flex>
 

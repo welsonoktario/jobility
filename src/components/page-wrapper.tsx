@@ -6,7 +6,7 @@ export type PageWrapperProps = ContainerProps & {
 
 export function PageWrapper({ children, ...props }: PageWrapperProps) {
   return (
-    <Container {...props} as={Container} maxW={'7xl'} paddingY={'8'} flexGrow="1">
+    <Container {...props} as={Container} maxW={'7xl'} paddingY={{ base: 4, md: 8 }} flexGrow="1">
       {children}
     </Container>
   );
