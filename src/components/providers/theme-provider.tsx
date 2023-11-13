@@ -1,6 +1,8 @@
-import { FontSize, Theme } from '@/types/theme';
-import { ChakraProvider } from '@chakra-ui/react';
 import { createContext, useEffect, useState } from 'react';
+
+import { ChakraProvider } from '@chakra-ui/react';
+
+import { FontSize, Theme } from '@/types/theme';
 
 import baseTheme from '@/lib/theme';
 

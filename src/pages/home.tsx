@@ -1,5 +1,6 @@
-import { Button, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+
+import { Button, Text } from '@chakra-ui/react';
 
 import { PageWrapper } from '@/components/page-wrapper';
 
