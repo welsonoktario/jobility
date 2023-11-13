@@ -19,7 +19,7 @@ export function JobList({ jobs, ...props }: ListJobsProps) {
       placeContent={props.placeContent ?? 'center'}
     >
       {jobs.length ? (
-        jobs.map((job) => <CardJob key={job.id} {...job} />)
+        jobs.map((job) => <CardJob key={`job__${job.id}`} {...job} />)
       ) : (
         <Alert
           bg="transparent"

@@ -8,9 +8,11 @@ import {
   CloseButton,
   Collapse,
   Flex,
+  Spinner,
+  Text,
 } from '@chakra-ui/react';
 
-import { Job } from '@/types';
+import { Disability, Job, JobCategory } from '@/types';
 
 import { tryParseNumber } from '@/lib';
 import { $get } from '@/lib/helpers';
@@ -26,13 +28,28 @@ export type PaginatedJobs = {
 };
 
 export default function JobsPage() {
+  const [categories, setCategories] = useState<JobCategory[]>([]);
   const [jobs, setJobs] = useState<PaginatedJobs | null>();
   const [filters, setFilters] = useState<Record<string, any>>({});
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const loadData = async () => {
+  const loadJobCategories = async () => {
+    try {
+      const { status, data, message } = await $get<JobCategory[]>('/categories');
+
+      if (status === 'fail') {
+        throw new Error(message);
+      }
+
+      setCategories(data!);
+    } catch (e: any) {
+      setError(e.message);
+    }
+  };
+
+  const loadJobs = async () => {
     setIsLoading(true);
 
     try {
@@ -69,13 +86,15 @@ export default function JobsPage() {
   };
 
   useEffect(() => {
-    loadData();
+    loadJobCategories();
+  }, []);
+
+  useEffect(() => {
+    loadJobs();
   }, [filters]);
 
   return (
     <PageWrapper py={0}>
-      {isLoading ? <p>Loading...</p> : null}
-
       <Collapse in={error !== ''}>
         <Alert status="error" rounded="2xl" my="4">
           ❗
@@ -95,21 +114,32 @@ export default function JobsPage() {
 
       <JobsForm
         filters={filters}
-        jobCategories={[]}
+        jobCategories={categories}
         onCheckboxChange={handleCheckboxChange}
         onInputChange={handleInputChange}
         onSearch={handleSearch}
       />
 
-      <JobList jobs={jobs?.data ?? []} />
+      {isLoading ? (
+        <Flex mt={{ base: 40, md: 64 }} justify="center" align="center" direction="column" grow="1">
+          <Spinner textAlign="center" />
+          <Text textAlign="center" mt={4} fontWeight="semibold">
+            Loading...
+          </Text>
+        </Flex>
+      ) : (
+        <>
+          <JobList jobs={jobs?.data ?? []} />
 
-      <Flex justifyContent="center" w="full" mt="8">
-        {jobs?.currentPage === jobs?.totalPages ? (
-          'All jobs have already been shown.'
-        ) : (
-          <Button colorScheme="blue">Load more jobs</Button>
-        )}
-      </Flex>
+          <Flex justifyContent="center" w="full" mt="8">
+            {jobs?.currentPage === jobs?.totalPages ? (
+              <Text color="gray.500">All jobs have already been shown</Text>
+            ) : (
+              <Button colorScheme="blue">Load more jobs</Button>
+            )}
+          </Flex>
+        </>
+      )}
     </PageWrapper>
   );
 }

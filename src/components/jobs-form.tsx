@@ -75,8 +75,11 @@ export function JobsForm({
           icon={<ChevronDownIcon />}
           onChange={(e) => onInputChange('specialization', e.target.value)}
         >
-          <option>Admin</option>
-          <option>IT</option>
+          {jobCategories.map((category) => (
+            <option key={`category__${category.id}`} value={category.id}>
+              {category.name}
+            </option>
+          ))}
         </Select>
         <Button type="submit" flexShrink="0" colorScheme="blue">
           🔍

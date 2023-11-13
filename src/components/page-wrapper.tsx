@@ -1,4 +1,4 @@
-import { Container, Flex, Spinner, Text, type ContainerProps } from '@chakra-ui/react';
+import { Container, type ContainerProps, Flex, Spinner, Text } from '@chakra-ui/react';
 
 export type PageWrapperProps = ContainerProps & {
   children: React.ReactNode;
@@ -6,16 +6,30 @@ export type PageWrapperProps = ContainerProps & {
 };
 
 export function PageWrapper({ children, isLoading, ...props }: PageWrapperProps) {
-  return isLoading ? (
-    <Flex justify="center" align="center" grow="1" direction="column">
-      <Spinner />
-      <Text mt={4} fontWeight="semibold">
-        Loading...
-      </Text>
-    </Flex>
-  ) : (
-    <Container {...props} maxW={'7xl'} paddingY={'8'} flexGrow="1">
-      {children}
-    </Container>
+  return (
+    <>
+      <Flex
+        display={isLoading ? 'flex' : 'none'}
+        justify="center"
+        align="center"
+        direction="column"
+        grow="1"
+      >
+        <Spinner textAlign="center" />
+        <Text textAlign="center" mt={4} fontWeight="semibold">
+          Loading...
+        </Text>
+      </Flex>
+
+      <Container
+        {...props}
+        display={isLoading ? 'none' : 'block'}
+        maxW={'7xl'}
+        paddingY={'8'}
+        flexGrow="1"
+      >
+        {children}
+      </Container>
+    </>
   );
 }
