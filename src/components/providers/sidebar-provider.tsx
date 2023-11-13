@@ -1,5 +1,6 @@
-import { useDisclosure, UseDisclosureProps } from '@chakra-ui/react';
 import { createContext } from 'react';
+
+import { UseDisclosureProps, useDisclosure } from '@chakra-ui/react';
 
 type SidebarProviderProps = {
   children: React.ReactNode;

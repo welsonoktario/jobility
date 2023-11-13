@@ -1,4 +1,4 @@
-import { Container, Flex, type ContainerProps } from '@chakra-ui/react';
+import { Container, type ContainerProps, Flex } from '@chakra-ui/react';
 
 export type PageWrapperProps = ContainerProps & {
   children: React.ReactNode;
@@ -6,7 +6,7 @@ export type PageWrapperProps = ContainerProps & {
 
 export function PageWrapper({ children, ...props }: PageWrapperProps) {
   return (
-    <Container {...props} as={Container} maxW={'7xl'} paddingY={{ base: 4, md: 8 }} flexGrow="1">
+    <Container {...props} maxW={'7xl'} py={props.py ?? { base: 4, md: 8 }} flexGrow="1">
       {children}
     </Container>
   );

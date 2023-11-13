@@ -1,5 +1,6 @@
-import { User } from '@/types';
 import { createContext, useEffect, useState } from 'react';
+
+import { User } from '@/types';
 
 import { $get, $post } from '@/lib/helpers';
 

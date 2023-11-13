@@ -1,4 +1,6 @@
-import { User } from '@/types';
+import { useEffect, useState } from 'react';
+import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
+
 import {
   Box,
   Button,
@@ -15,8 +17,8 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
+
+import { User } from '@/types';
 
 import { $post } from '@/lib/helpers';
 

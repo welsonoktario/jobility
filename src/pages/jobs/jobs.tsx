@@ -1,31 +1,33 @@
-import { Job } from '@/types';
+import { useEffect, useState } from 'react';
+
 import {
   Alert,
   AlertDescription,
-  AlertIcon,
   AlertTitle,
-  Box,
   Button,
   CloseButton,
+  Collapse,
   Flex,
-  Heading,
-  Input,
-  Select,
-  SimpleGrid,
-  Stack,
-  Text,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 
+import { Job } from '@/types';
+
+import { tryParseNumber } from '@/lib';
 import { $get } from '@/lib/helpers';
 
-import { CardJob } from '@/components/card-job';
-import { PageWrapper } from '@/components/page-wrapper';
-import { ChevronDownIcon } from 'lucide-react';
+import { JobList, JobsForm, PageWrapper } from '@/components';
+
+export type PaginatedJobs = {
+  data: Job[];
+  totalData: number;
+  dataPerPage: number;
+  currentPage: number;
+  totalPages: number;
+};
 
 export default function JobsPage() {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [filters, setFilters] = useState<Record<string, string>>({});
+  const [jobs, setJobs] = useState<PaginatedJobs | null>();
+  const [filters, setFilters] = useState<Record<string, any>>({});
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -35,13 +37,15 @@ export default function JobsPage() {
 
     try {
       const filterEmpty = Object.keys(filters).length <= 0;
-      const { status, data, message } = await $get<Job[]>(
-        filterEmpty ? '/job' : '/job' + new URLSearchParams(filters),
+      const { data, message } = await $get<PaginatedJobs>(
+        filterEmpty ? '/job' : '/job?' + new URLSearchParams(filters),
       );
 
-      if (status === 'error') {
+      if (!data) {
         throw new Error(message);
       }
+
+      setJobs(data);
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -53,17 +57,28 @@ export default function JobsPage() {
     e.preventDefault();
   };
 
+  const handleInputChange = (key: string, value: string) => {
+    setFilters({ ...filters, [key]: tryParseNumber(value) ?? value });
+  };
+
+  const handleCheckboxChange = (key: string, value: string) => {
+    const values = new Set<string | number>(filters[key] || []);
+    values.has(value) ? values.delete(value) : values.add(tryParseNumber(value) ?? value);
+
+    setFilters({ ...filters, [key]: Array.from(values) });
+  };
+
   useEffect(() => {
     loadData();
   }, [filters]);
 
   return (
-    <PageWrapper position={'relative'}>
+    <PageWrapper py={0}>
       {isLoading ? <p>Loading...</p> : null}
 
-      {error ? (
-        <Alert status="error" rounded="2xl" mb="4">
-          <AlertIcon />
+      <Collapse in={error !== ''}>
+        <Alert status="error" rounded="2xl" my="4">
+          ❗
           <Flex columnGap="1" w="100%">
             <AlertTitle>Oops!</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
@@ -76,71 +91,25 @@ export default function JobsPage() {
             onClick={() => setError('')}
           />
         </Alert>
-      ) : null}
+      </Collapse>
 
-      <Stack
-        as="form"
-        onSubmit={handleSearch}
-        position={{ base: 'absolute', md: 'inherit' }}
-        bottom={{ base: 4, md: 'inherit' }}
-        insetX={{ base: 4, md: 'inherit' }}
-        bg="white"
-        rounded="2xl"
-        shadow="lg"
-        p="6"
-      >
-        <Heading size="md">🔎 Find your dream job</Heading>
-        <Flex flexDirection={{ base: 'column', md: 'row' }} mt="4" gap="4">
-          <Input variant="filled" placeholder="Job title, company name" />
-          <Select
-            display={{ base: 'none', md: 'block' }}
-            placeholder="Job specialization"
-            variant="filled"
-          >
-            <option>Administration</option>
-            <option>IT</option>
-          </Select>
-          <Button type="submit" flexShrink="0" colorScheme="blue">
-            Search&nbsp;&nbsp;&nbsp;🔍
-          </Button>
-        </Flex>
-        <Box w='100%' overflowX='scroll'>
-          <Select placeContent='Disabilties' icon={<ChevronDownIcon />} multiple>
-            <option value="tunanetra">Tunanetra</option>
-            <option value="tunarungu">Tunarungu</option>
-            <option value="tunawicara">Tunawicara</option>
-          </Select>
-        </Box>
-      </Stack>
+      <JobsForm
+        filters={filters}
+        jobCategories={[]}
+        onCheckboxChange={handleCheckboxChange}
+        onInputChange={handleInputChange}
+        onSearch={handleSearch}
+      />
 
-      <SimpleGrid
-        mt={{ base: 0, md: 8 }}
-        my={{ base: 'auto', md: 0 }}
-        columns={{ base: 1, md: 2, lg: 3 }}
-        gap="4"
-        flexGrow="1"
-        placeContent="center"
-      >
-        {jobs.length ? (
-          jobs.map((job) => <CardJob {...job} />)
+      <JobList jobs={jobs?.data ?? []} />
+
+      <Flex justifyContent="center" w="full" mt="8">
+        {jobs?.currentPage === jobs?.totalPages ? (
+          'All jobs have already been shown.'
         ) : (
-          <Alert
-            bg="transparent"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            textAlign="center"
-            w="100%"
-            aspectRatio={{ base: '1 / 1', md: '3 / 1' }}
-            gridColumn="1 / -1"
-          >
-            <Heading size="2xl" mb="6">
-              😞
-            </Heading>
-            No job is available currently
-          </Alert>
+          <Button colorScheme="blue">Load more jobs</Button>
         )}
-      </SimpleGrid>
+      </Flex>
     </PageWrapper>
   );
 }

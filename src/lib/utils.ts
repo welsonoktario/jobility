@@ -11,3 +11,13 @@ export function relativeDateTime(input: string | Date) {
 
   return dayjs().to(date);
 }
+
+export function tryParseNumber(str: string) {
+  const parsedValue = parseInt(str, 10);
+
+  if (isNaN(parsedValue)) {
+    return null;
+  }
+
+  return parsedValue;
+}
