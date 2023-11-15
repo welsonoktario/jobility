@@ -9,7 +9,7 @@ export function useAuth() {
     throw new Error('useAuth must be used within a ThemeProvider');
   }
 
-  const value = useMemo(() => auth, [auth.user]);
+  const value = useMemo(() => auth, [auth.user, auth.isLoading]);
 
   return value;
 }
