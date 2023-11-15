@@ -7,10 +7,13 @@ export async function $get<T = unknown>(
   headers?: Record<string, string>,
   options?: RequestInit,
 ): Promise<APIResponse<T>> {
+  const token = localStorage.getItem('token');
+
   const httpOptions: RequestInit = {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
       ...headers,
     },
   };
@@ -25,11 +28,14 @@ export async function $post<T = unknown>(
   body?: Record<string, any>,
   headers?: Record<string, string>,
 ): Promise<APIResponse<T>> {
+  const token = localStorage.getItem('token');
+
   const httpOptions: RequestInit = {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
       ...headers,
     },
     body: JSON.stringify(body),
