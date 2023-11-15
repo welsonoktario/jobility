@@ -85,7 +85,7 @@ export function DatePicker({ day, month, year, variant = 'full', onChange }: Dat
         >
           {month && year
             ? getDays().map((day, idx) => (
-                <option key={idx} value={idx}>
+                <option key={idx} value={day}>
                   {day}
                 </option>
               ))
