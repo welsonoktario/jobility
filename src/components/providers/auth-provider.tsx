@@ -77,7 +77,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsLoading(false);
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     setTimeout(() => {
       $get<User | null>('/auth/check')
         .then((res) => {
@@ -88,7 +88,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         .catch((e) => console.error('Failed to load user data'))
         .finally(() => setIsLoading(false));
     }, 1000);
-  }, []);
+  }, []); */
 
   const value = {
     user,

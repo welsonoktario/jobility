@@ -13,7 +13,6 @@ export async function $get<T = unknown>(
       'Content-Type': 'application/json',
       ...headers,
     },
-    credentials: 'include',
   };
 
   const response = await fetch(API_URL + url, httpOptions);
@@ -34,7 +33,6 @@ export async function $post<T = unknown>(
       ...headers,
     },
     body: JSON.stringify(body),
-    credentials: 'include',
   };
 
   const response = await fetch(API_URL + url, httpOptions);
