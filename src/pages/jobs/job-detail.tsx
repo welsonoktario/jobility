@@ -10,8 +10,9 @@ import { $get } from '@/lib/helpers';
 
 import { useAuth } from '@/components';
 import { PageWrapper } from '@/components/page-wrapper';
+import withTransition from '@/components/with-transition';
 
-export default function JobPage() {
+function JobDetailPage() {
   const { jobId } = useParams();
   const { user } = useAuth();
 
@@ -20,16 +21,12 @@ export default function JobPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (jobId) {
-      setTimeout(() => {
-        $get<Job>(`/job/${jobId}`)
-          .then(({ status, data, message }) => {
-            console.log(data);
-            status === 'fail' ? setError(message ?? '') : setJob(data);
-          })
-          .finally(() => setIsLoading(false));
-      }, 1000);
-    }
+    $get<Job>(`/job/${jobId}`)
+      .then(({ status, data, message }) => {
+        console.log(data);
+        status === 'fail' ? setError(message ?? '') : setJob(data);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -57,9 +54,11 @@ export default function JobPage() {
           </Flex>
 
           <Flex direction="column" justify="space-between" align="flex-end" h="full">
-            <Text color="GrayText" fontSize="sm">
-              {`Posted ${relativeDateTime(job!.datePosted)}`}
-            </Text>
+            {job ? (
+              <Text color="GrayText" fontSize="sm">
+                {`Posted ${relativeDateTime(job!.datePosted)}`}
+              </Text>
+            ) : null}
             <Button
               as={RouterLink}
               colorScheme="blue"
@@ -72,18 +71,27 @@ export default function JobPage() {
         </Flex>
 
         <Flex mt="4" columnGap="4">
+          {job?.disability ? (
+            <>
+              <Text>
+                <span style={{ userSelect: 'none' }}>♿&nbsp;</span>
+                {job.disability.name}
+              </Text>
+              <p>|</p>
+            </>
+          ) : null}
           <Text>
-            <span style={{ userSelect: 'none' }}>🕔&nbsp;&nbsp;&nbsp;</span>
+            <span style={{ userSelect: 'none' }}>🕔&nbsp;</span>
             {job?.system}
           </Text>
           <p>|</p>
           <Text>
-            <span style={{ userSelect: 'none' }}>📍&nbsp;&nbsp;&nbsp;</span>
+            <span style={{ userSelect: 'none' }}>📍&nbsp;</span>
             {job?.location}
           </Text>
           <p>|</p>
           <Text>
-            <span style={{ userSelect: 'none' }}>💲&nbsp;&nbsp;&nbsp;</span>
+            <span style={{ userSelect: 'none' }}>💲&nbsp;</span>
             {job?.salary ? formatRupiah(job?.salary) : 'Hidden'}
           </Text>
         </Flex>
@@ -131,3 +139,5 @@ export default function JobPage() {
     </PageWrapper>
   );
 }
+
+export default withTransition(JobDetailPage);

@@ -20,22 +20,10 @@ import { useAuth, useScroll, useTheme } from '@/components/hooks';
 import { useSidebar } from './hooks/useSidebar';
 
 export default function Header() {
-  const { isOpen, onOpen, onClose } = useSidebar();
-  const { theme, setTheme, setFontSize } = useTheme();
+  const { onOpen } = useSidebar();
+  const { setFontSize } = useTheme();
   const { user, isLoading, logout } = useAuth();
   const { y } = useScroll();
-
-  const themeMenuIcon = () => {
-    if (theme === 'light') {
-      return <SunIcon />;
-    }
-
-    if (theme === 'dark') {
-      return <MoonIcon />;
-    }
-
-    return <MonitorIcon />;
-  };
 
   const handleLogout = async (onClose: () => void) => {
     try {
@@ -72,14 +60,14 @@ export default function Header() {
           </Flex>
 
           <Flex direction={'row'} columnGap={4} alignItems={'center'}>
-            <Menu>
+            {/* <Menu>
               <MenuButton as={IconButton} variant={'ghost'} icon={themeMenuIcon()} isRound />
               <MenuList>
                 <MenuItem onClick={() => setTheme('light')}>Light</MenuItem>
                 <MenuItem onClick={() => setTheme('dark')}>Dark</MenuItem>
                 <MenuItem onClick={() => setTheme('system')}>System</MenuItem>
               </MenuList>
-            </Menu>
+            </Menu> */}
 
             <Menu>
               <MenuButton as={IconButton} variant={'ghost'} icon={<TypeIcon />} isRound />

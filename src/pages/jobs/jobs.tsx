@@ -12,12 +12,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { Disability, Job, JobCategory } from '@/types';
+import { Job, JobCategory } from '@/types';
 
 import { tryParseNumber } from '@/lib';
 import { $get } from '@/lib/helpers';
 
 import { JobList, JobsForm, PageWrapper } from '@/components';
+import withTransition from '@/components/with-transition';
 
 export type PaginatedJobs = {
   data: Job[];
@@ -27,9 +28,15 @@ export type PaginatedJobs = {
   totalPages: number;
 };
 
-export default function JobsPage() {
+function JobsPage() {
   const [categories, setCategories] = useState<JobCategory[]>([]);
-  const [jobs, setJobs] = useState<PaginatedJobs | null>();
+  const [jobs, setJobs] = useState<PaginatedJobs>({
+    currentPage: 1,
+    data: [],
+    dataPerPage: 1,
+    totalData: 0,
+    totalPages: 0,
+  });
   const [filters, setFilters] = useState<Record<string, any>>({});
 
   const [isLoading, setIsLoading] = useState(true);
@@ -62,12 +69,22 @@ export default function JobsPage() {
         throw new Error(message);
       }
 
-      setJobs(data);
+      setJobs({
+        currentPage: data.currentPage,
+        data: filters.page ? [...jobs.data, ...data.data] : data.data,
+        dataPerPage: data.dataPerPage,
+        totalData: data.totalData,
+        totalPages: data.totalPages,
+      });
     } catch (e: any) {
       setError(e.message);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleLoadMore = () => {
+    setFilters({ ...filters, page: (jobs!.currentPage + 1).toString() });
   };
 
   const handleSearch = (e: React.FormEvent<HTMLDivElement>) => {
@@ -79,8 +96,8 @@ export default function JobsPage() {
   };
 
   const handleCheckboxChange = (key: string, value: string) => {
-    const values = new Set<string | number>(filters[key] || []);
-    values.has(value) ? values.delete(value) : values.add(tryParseNumber(value) ?? value);
+    const values = new Set<string>(filters[key] || []);
+    values.has(value) ? values.delete(value) : values.add(value);
 
     setFilters({ ...filters, [key]: Array.from(values) });
   };
@@ -131,15 +148,23 @@ export default function JobsPage() {
         <>
           <JobList jobs={jobs?.data ?? []} />
 
-          <Flex justifyContent="center" w="full" mt="8">
-            {jobs?.currentPage === jobs?.totalPages ? (
-              <Text color="gray.500">All jobs have already been shown</Text>
-            ) : (
-              <Button colorScheme="blue">Load more jobs</Button>
-            )}
-          </Flex>
+          {jobs?.data.length ? (
+            <>
+              <Flex justifyContent="center" w="full" mt="8">
+                {jobs?.currentPage === jobs?.totalPages ? (
+                  <Text color="gray.500">All jobs have already been shown</Text>
+                ) : (
+                  <Button colorScheme="blue" onClick={() => handleLoadMore()}>
+                    Load more jobs
+                  </Button>
+                )}
+              </Flex>
+            </>
+          ) : null}
         </>
       )}
     </PageWrapper>
   );
 }
+
+export default withTransition(JobsPage);

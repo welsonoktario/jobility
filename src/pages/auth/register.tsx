@@ -18,14 +18,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { User } from '@/types';
-
-import { $post } from '@/lib/helpers';
-
 import { useAuth } from '@/components/hooks';
 import { PageWrapper } from '@/components/page-wrapper';
+import withTransition from '@/components/with-transition';
 
-export default function RegisterPage() {
+function RegisterPage() {
   const navigate = useNavigate();
   const { user, isLoading, register } = useAuth();
   const [error, setError] = useState('');
@@ -52,7 +49,7 @@ export default function RegisterPage() {
 
   return (
     <PageWrapper display="flex" alignItems="center" justifyContent="center">
-      <Card rounded="3xl" w={{ base: 'full', md: 'lg' }}>
+      <Card rounded="3xl" w={{ base: 'full', md: 'lg' }} m="auto" mt={[0, 28]}>
         <CardHeader>
           <Heading size="md" textAlign="center">
             Create an Account
@@ -133,3 +130,5 @@ export default function RegisterPage() {
     </PageWrapper>
   );
 }
+
+export default withTransition(RegisterPage);

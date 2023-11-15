@@ -26,8 +26,9 @@ import { $post } from '@/lib/helpers';
 
 import { useAuth } from '@/components/hooks';
 import { PageWrapper } from '@/components/page-wrapper';
+import withTransition from '@/components/with-transition';
 
-export default function LoginPage() {
+function LoginPage() {
   const navigate = useNavigate();
   const { user, login, isLoading } = useAuth();
 
@@ -54,7 +55,7 @@ export default function LoginPage() {
 
   return (
     <PageWrapper display="flex" alignItems="center" justifyContent="center">
-      <Card rounded="3xl" w={{ base: 'full', md: 'lg' }}>
+      <Card rounded="3xl" w={{ base: 'full', md: 'lg' }} m="auto" mt={[0, 32]}>
         <CardHeader>
           <Heading size="md" textAlign="center">
             Login to Jobility
@@ -127,3 +128,5 @@ export default function LoginPage() {
     </PageWrapper>
   );
 }
+
+export default withTransition(LoginPage);
