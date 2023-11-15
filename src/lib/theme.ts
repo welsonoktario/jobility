@@ -1,8 +1,8 @@
 import {
-  theme as chakraTheme,
-  extendTheme,
   StyleFunctionProps,
   type ThemeConfig,
+  theme as chakraTheme,
+  extendTheme,
 } from '@chakra-ui/react';
 
 const config: ThemeConfig = {

@@ -1,5 +1,5 @@
-import { Job } from "./job";
-import { User } from "./user";
+import { Job } from './job';
+import { User } from './user';
 
 enum ApplicationStatus {
   Pending = 'Pending',
@@ -15,9 +15,9 @@ export type Application = {
   id: number;
   userId: number;
   jobId: number;
-  status: ApplicationStatus
+  status: ApplicationStatus;
   coverLetter?: string;
   dateApplied: string;
   user: User;
   job: Job;
-}
+};

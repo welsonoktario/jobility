@@ -1,27 +1,28 @@
+import { Link } from 'react-router-dom';
+
 import {
   Box,
   Button,
   Container,
   Flex,
   Heading,
-  Icon,
   IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  useDisclosure,
+  Spinner,
 } from '@chakra-ui/react';
 import { MenuIcon, MonitorIcon, MoonIcon, SunIcon, TypeIcon, UserIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 import { useAuth, useScroll, useTheme } from '@/components/hooks';
+
 import { useSidebar } from './hooks/useSidebar';
 
 export default function Header() {
   const { isOpen, onOpen, onClose } = useSidebar();
   const { theme, setTheme, setFontSize } = useTheme();
-  const { user } = useAuth();
+  const { user, isLoading, logout } = useAuth();
   const { y } = useScroll();
 
   const themeMenuIcon = () => {
@@ -34,6 +35,15 @@ export default function Header() {
     }
 
     return <MonitorIcon />;
+  };
+
+  const handleLogout = async (onClose: () => void) => {
+    try {
+      await logout();
+      onClose();
+    } catch (e: any) {
+      console.error(e.message);
+    }
   };
 
   return (
@@ -55,7 +65,9 @@ export default function Header() {
               <MenuIcon />
             </IconButton>
             <Link to="/">
-              <Heading size={'lg'}>Jobility</Heading>
+              <Heading fontSize="1.5rem" pb={1}>
+                Jobility
+              </Heading>
             </Link>
           </Flex>
 
@@ -78,15 +90,42 @@ export default function Header() {
               </MenuList>
             </Menu>
 
-            {user ? (
-              <IconButton aria-label="Profile" icon={<UserIcon />} colorScheme="blue" isRound />
-            ) : (
+            {isLoading ? (
+              <IconButton
+                aria-label="Loading"
+                icon={<Spinner />}
+                variant="ghost"
+                colorScheme="blue"
+                isRound
+              />
+            ) : null}
+            {!isLoading && user ? (
+              <Menu>
+                {({ onClose }) => (
+                  <>
+                    <MenuButton
+                      as={IconButton}
+                      aria-label="Profile"
+                      icon={<UserIcon />}
+                      colorScheme="blue"
+                      isRound
+                    />
+
+                    <MenuList>
+                      <MenuItem>Profile</MenuItem>
+                      <MenuItem onClick={async () => await handleLogout(onClose)}>Logout</MenuItem>
+                    </MenuList>
+                  </>
+                )}
+              </Menu>
+            ) : null}
+            {!isLoading && !user ? (
               <Link to={'/auth/login'}>
                 <Button variant={'solid'} colorScheme="blue">
                   Login
                 </Button>
               </Link>
-            )}
+            ) : null}
           </Flex>
         </Flex>
       </Container>

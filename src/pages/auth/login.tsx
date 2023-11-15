@@ -1,4 +1,6 @@
-import { User } from '@/types';
+import { useEffect, useState } from 'react';
+import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
+
 import {
   Box,
   Button,
@@ -17,8 +19,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { LogInIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
+
+import { User } from '@/types';
 
 import { $post } from '@/lib/helpers';
 
@@ -27,9 +29,8 @@ import { PageWrapper } from '@/components/page-wrapper';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { user, setUser } = useAuth();
+  const { user, login, isLoading } = useAuth();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -44,24 +45,10 @@ export default function LoginPage() {
     e.preventDefault();
     e.currentTarget.checkValidity();
 
-    setIsLoading(true);
     try {
-      const res = await $post<User>('/auth/login', {
-        email,
-        password,
-      });
-
-      const { status, data, message } = res;
-
-      if (status === 'fail') {
-        throw new Error(message);
-      }
-
-      setUser(data);
+      await login(email, password);
     } catch (e: any) {
-      setError(e.message);
-    } finally {
-      setIsLoading(false);
+      setError(e.error);
     }
   }
 

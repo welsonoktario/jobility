@@ -1,4 +1,6 @@
-import { User } from '@/types';
+import { useEffect, useState } from 'react';
+import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
+
 import {
   Box,
   Button,
@@ -15,8 +17,8 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
+
+import { User } from '@/types';
 
 import { $post } from '@/lib/helpers';
 
@@ -25,9 +27,8 @@ import { PageWrapper } from '@/components/page-wrapper';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  const { user, setUser } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const [errors, setError] = useState('');
+  const { user, isLoading, register } = useAuth();
+  const [error, setError] = useState('');
 
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
@@ -42,25 +43,10 @@ export default function RegisterPage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    setIsLoading(true);
     try {
-      const res = await $post<User>('/auth/register', {
-        fullname,
-        email,
-        password,
-      });
-
-      const { data, status, message } = res;
-
-      if (status === 'fail') {
-        throw new Error(message);
-      }
-
-      setUser(data);
+      await register(fullname, email, password);
     } catch (e: any) {
       setError(e.message);
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -83,7 +69,7 @@ export default function RegisterPage() {
                 onChange={(e) => setFullname(e.target.value)}
                 autoCapitalize="false"
                 autoComplete="name"
-                placeholder="Email"
+                placeholder="Full name  "
                 isRequired
               />
             </FormControl>

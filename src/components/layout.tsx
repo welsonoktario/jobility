@@ -1,5 +1,6 @@
-import { Flex } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
+
+import { Flex } from '@chakra-ui/react';
 
 import Header from '@/components/header';
 import { AuthProvider, SidebarProvider, ThemeProvider } from '@/components/providers';
