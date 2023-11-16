@@ -109,62 +109,53 @@ export default function ApplicationsPage() {
 
   const [skillsListInfo, setSkillsListInfo] = useState<string[]>([]);
 
+
   // useEffect(() => {
-    
-  
-  //   return () => {
-  //     second
-  //   }
-  // }, [third])
-  
+  //   setPersonalInfo({
+  //     firstName: 'Lorem',
+  //     lastName: 'Ipsum',
+  //     email: 'loremipsum@gmail.com',
+  //     phoneNumber: {
+  //       code: '62',
+  //       number: '12313',
+  //     },
+  //     birthday: {
+  //       day: 1,
+  //       month: 3,
+  //       year: 2011,
+  //     },
+  //   })
 
+  //   setWorkExpInfo({
+  //     jobTitle: 'Lorem',
+  //     jobLevel: 'Ipsum',
+  //     companyName: 'Lorem',
+  //     location: 'Lorem',
+  //     startDate: {
+  //       month: 9,
+  //       year: 2015,
+  //     },
+  //     endDate: {
+  //       month: 8,
+  //       year: 2016,
+  //     },
+  //     accomplishment: '',
+  //   })
 
-  useEffect(() => {
-    setPersonalInfo({
-      firstName: 'Lorem',
-      lastName: 'Ipsum',
-      email: 'loremipsum@gmail.com',
-      phoneNumber: {
-        code: '62',
-        number: '12313',
-      },
-      birthday: {
-        day: 1,
-        month: 3,
-        year: 2011,
-      },
-    })
-
-    setWorkExpInfo({
-      jobTitle: 'Lorem',
-      jobLevel: 'Ipsum',
-      companyName: 'Lorem',
-      location: 'Lorem',
-      startDate: {
-        month: 9,
-        year: 2015,
-      },
-      endDate: {
-        month: 8,
-        year: 2016,
-      },
-      accomplishment: '',
-    })
-
-    setEduInfo({
-      educationalAttainment: educationalAttainment[1],
-      schoolName: 'Ipsum',
-      startDate: {
-        month: 1,
-        year: 2001,
-      },
-      endDate: {
-        month: 2,
-        year: 2002,
-      },
-      accomplishment: '',
-    })
-  }, [])
+  //   setEduInfo({
+  //     educationalAttainment: educationalAttainment[1],
+  //     schoolName: 'Ipsum',
+  //     startDate: {
+  //       month: 1,
+  //       year: 2001,
+  //     },
+  //     endDate: {
+  //       month: 2,
+  //       year: 2002,
+  //     },
+  //     accomplishment: '',
+  //   })
+  // }, [])
 
 
 
