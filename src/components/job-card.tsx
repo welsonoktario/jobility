@@ -46,9 +46,22 @@ export function CardJob(props: CardJobProps) {
         </Flex>
 
         <Stack mt="6" rowGap="0">
-          <Text>🕔&nbsp;&nbsp;&nbsp;{props.system}</Text>
-          <Text>📍&nbsp;&nbsp;&nbsp;{props.location}</Text>
-          <Text>💲&nbsp;&nbsp;&nbsp;{props.salary ? formatRupiah(props.salary) : 'Hidden'}</Text>
+          <Text>
+            <span style={{ userSelect: 'none' }}>♿&nbsp;&nbsp;&nbsp;</span>
+            {props.disability?.name ?? '-'}
+          </Text>
+          <Text>
+            <span style={{ userSelect: 'none' }}>🕔&nbsp;&nbsp;&nbsp;</span>
+            {props.system}
+          </Text>
+          <Text>
+            <span style={{ userSelect: 'none' }}>📍&nbsp;&nbsp;&nbsp;</span>
+            {props.location}
+          </Text>
+          <Text>
+            <span style={{ userSelect: 'none' }}>💲&nbsp;&nbsp;&nbsp;</span>
+            {props.salary ? formatRupiah(props.salary) : 'Hidden'}
+          </Text>
         </Stack>
       </CardBody>
       <CardFooter>

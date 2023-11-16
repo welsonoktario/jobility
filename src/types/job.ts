@@ -1,4 +1,5 @@
 import { Company } from './company';
+import { Disability } from './disability';
 
 export type JobCategory = {
   id: number;
@@ -32,8 +33,10 @@ export type Job = {
   requirement?: string;
   datePosted: string;
   dateClosed?: string;
+  disabilityId?: number;
   jobcategoryId: number;
   companyId: number;
+  disability?: Disability;
   jobCategory: JobCategory;
   company: Company;
 };

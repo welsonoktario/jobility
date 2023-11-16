@@ -8,3 +8,4 @@ export * from './layout';
 export * from './page-wrapper';
 export * from './providers';
 export * from './sidebar';
+export * from './with-transition';

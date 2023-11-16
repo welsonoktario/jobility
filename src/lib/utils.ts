@@ -2,7 +2,11 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 export function formatRupiah(num: Number) {
-  return num.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+  return num.toLocaleString('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    maximumFractionDigits: 0,
+  });
 }
 
 export function relativeDateTime(input: string | Date) {

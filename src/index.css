@@ -5,3 +5,13 @@ html.fs-lg {
 html.fs-xl {
   font-size: 20px !important;
 }
+
+.slide {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--chakra-colors-blue-400);
+  z-index: 1200;
+}

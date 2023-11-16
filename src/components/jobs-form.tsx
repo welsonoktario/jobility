@@ -7,6 +7,15 @@ import { JobCategory } from '@/types';
 
 import { JobFilter } from './job-filter';
 
+const disabilities = [
+  { value: '1', label: 'Color Blindness' },
+  { value: '2', label: 'Partial Blindness' },
+  { value: '3', label: 'Full Blindness' },
+  { value: '4', label: 'Dyslexia' },
+  { value: '5', label: 'Hearing Loss' },
+  { value: '6', label: 'Deafness' },
+  { value: '7', label: 'Physical Impairment' },
+];
 const jobTypes = [
   { value: 'Fulltime', label: 'Full-time' },
   { value: 'Contract', label: 'Contract' },
@@ -54,7 +63,7 @@ export function JobsForm({
       <Flex mt="4" gap="4">
         <Input
           variant="filled"
-          placeholder="💼  Job title, company name"
+          placeholder="💼  Search job title..."
           onBlur={(e) => onInputChange('query', e.target.value)}
         />
         <Select
@@ -93,7 +102,7 @@ export function JobsForm({
           title="♿ Disabilities"
           filters={filters}
           filterKey="disabilities"
-          options={[]}
+          options={disabilities}
           onCheckboxChange={onCheckboxChange}
         />
         <JobFilter
