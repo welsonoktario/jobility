@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   Box,
@@ -24,6 +24,8 @@ export default function Header() {
   const { setFontSize } = useTheme();
   const { user, isLoading, logout } = useAuth();
   const { y } = useScroll();
+  const navigate = useNavigate();
+
 
   const handleLogout = async (onClose: () => void) => {
     try {
@@ -100,7 +102,7 @@ export default function Header() {
                     />
 
                     <MenuList>
-                      <MenuItem>Profile</MenuItem>
+                      <MenuItem onClick={() => {navigate('/profile')}}>Profile</MenuItem>
                       <MenuItem onClick={async () => await handleLogout(onClose)}>Logout</MenuItem>
                     </MenuList>
                   </>
