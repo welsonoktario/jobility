@@ -12,6 +12,7 @@ const ProfilePage = loadable(() => import('@/pages/profile'));
 const ApplyPage = loadable(() => import('@/pages/jobs/apply'));
 const ApplicationsPage = loadable(() => import('@/pages/applications/applications'));
 const ApplicationDetailPage = loadable(() => import('@/pages/applications/application-detail'));
+const SuccessPage = loadable(() => import('@/pages/jobs/success'));
 
 export default function App() {
   const location = useLocation();
@@ -29,6 +30,7 @@ export default function App() {
             <Route index element={<JobsPage />} />
             <Route path=":jobId" element={<JobDetailPage />} />
             <Route path=":jobId/apply" element={<ApplyPage />} />
+            <Route path="apply/success" element={<SuccessPage />} />
           </Route>
           <Route path="applications">
             <Route index element={<ApplicationsPage />} />
