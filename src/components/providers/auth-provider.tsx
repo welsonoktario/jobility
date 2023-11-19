@@ -35,7 +35,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | undefined | null>(null);
 
   const register = async (fullname: string, email: string, password: string) => {
-    const { data, status, message } = await $post<User>('/auth/register', {
+    setIsLoading(true);
+
+    const { data, status, message } = await $post<{ user: User; token: string }>('/auth/register', {
       fullname,
       email,
       password,
@@ -45,7 +47,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       throw new Error(message);
     }
 
-    setUser(data);
+    localStorage.setItem('token', data!.token);
+    setUser(data!.user);
+    setIsLoading(false);
   };
 
   const login = async (email: string, password: string) => {
@@ -64,7 +68,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     localStorage.setItem('token', data!.token);
-    setUser(data?.user);
+    setUser(data!.user);
     setIsLoading(false);
   };
 
